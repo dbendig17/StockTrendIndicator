@@ -5,6 +5,18 @@
 
 //program takes in one input .txt file for stock data
 int main( int argc, char **argv ){
-    printf("Hello world\n");
+    char filename[25];
+    double *arr;
+
+    if(argc != 2){
+        fprintf(stderr, "usage: %s 'filename.txt'\n", argv[0]);
+        exit(-1);
+    } else {
+        strcpy(filename, argv[1]);
+        arr = parseFile(filename);
+        printf("%f\n", arr[253]);
+        free(arr);
+    }
+
     return 0;
 }
