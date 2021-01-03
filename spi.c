@@ -37,7 +37,6 @@ double *parseFile(char *filename, int *size) {
             curVal = atof(valPtr);
             out[index] = curVal;
             index++;
-            //printf("%f\n", curVal);
         }
     }
     out[index] = -1;
@@ -70,13 +69,23 @@ double calculateSMA(double *prices, int numPeriods) {
 
 //should use calculateEMA to get first previous day MA value
 //call calculateDailyMA for each period
-// double calculateEMA(double price, int numPeriods, double periodSMA) {
-//     double out;
-//     int counter = numPeriods;
-//     double prevMA;
-//
-//     return out;
-// }
+double *calculateEMA(double *prices, int numPeriods, double periodSMA) {
+    double *maArr = malloc(sizeof(double) * numPeriods);
+    int counter = numPeriods;
+    double curMA;
+    int i;
+
+    for(i = 0; i < counter; i++) {
+        if(i == 0){
+            curMA = calculateDailyMA(prices[i], numPeriods, periodSMA);
+        } else {
+            curMA = calculateDailyMA(prices[i], numPeriods, curMA);
+        }
+        maArr[i] = curMA;
+    }
+
+    return maArr;
+}
 
 //make MACD calculation function, refer to resources
 
