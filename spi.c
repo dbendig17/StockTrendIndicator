@@ -67,10 +67,11 @@ double calculateSMA(double *prices, int numPeriods) {
     return sum / numPeriods;
 }
 
-//should use calculateEMA to get first previous day MA value
-//call calculateDailyMA for each period
-double *calculateEMA(double *prices, int numPeriods, double periodSMA) {
-    double *maArr = malloc(sizeof(double) * numPeriods);
+//takes in arr of prices for each period in period length
+//also takes in the previous num periods SMA, to use as the first
+//prevMA in the DailyMA calculation
+//returns double array of EMA values for a period
+double calculateEMA(double *prices, int numPeriods, double periodSMA) {
     int counter = numPeriods;
     double curMA;
     int i;
@@ -81,13 +82,37 @@ double *calculateEMA(double *prices, int numPeriods, double periodSMA) {
         } else {
             curMA = calculateDailyMA(prices[i], numPeriods, curMA);
         }
-        maArr[i] = curMA;
+        //printf("%f\n", curMA);
     }
 
-    return maArr;
+    return curMA;
 }
 
 //make MACD calculation function, refer to resources
+double calculateMACD(double *prices, int size) {
+    double macd1[26];
+    double macd2[12];
+
+    if(size < 52) {
+        printf("Cannot calculate MACD, must have 52 periods of data.\n");
+    } else {
+        int startIdx = size - 52;
+        int i;
+        int j;
+        double sma26;
+        //fill arr for 26 period SMA
+        j = 0;
+        for(i = (startIdx - 1); i < (size - 26); i++) {
+            macd1[j] = prices[i];
+            printf("added: %f at %d\n", prices[i], j);
+            j++;
+        }
+        sma26 = calculateSMA(macd1, 26);
+    }
+
+    return 0.0;
+}
+
 
 //make chooseAction function
 
