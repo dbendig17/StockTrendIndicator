@@ -125,12 +125,27 @@ double calculateMACD(double *prices, int size) {
         arr26 = setPriceArray(prices, size, 26, 1);
         ema12 = calculateEMA(arr12, 12, sma12);
         ema26 = calculateEMA(arr26, 26, sma26);
-        printf("ema12 %f\n", ema12);
-        printf("ema26 %f\n", ema26);
+        //printf("ema12 %f\n", ema12);
+        //printf("ema26 %f\n", ema26);
         free(arr12);
         free(arr26);
         return ema12 - ema26;
     }
+}
+
+double calculateSignalLine(double *prices, int size){
+    int i, j, k;
+    double *signalLine = malloc(sizeof(double) * 9);
+
+    j = 0;
+    k = 8;
+    for(i = 0; i < 9; i++){
+        signalLine[j] = calculateMACD(prices, (size - k));
+        //printf("%f\n", signalLine[j]);
+        j++;
+        k--;
+    }
+    return calculateSMA(signalLine, 9);
 }
 
 //calculate signal line function
