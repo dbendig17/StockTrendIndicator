@@ -5,7 +5,9 @@
 
 //takes in pointer to file, parses information into arr
 //returns arr by reference
-double *parseFile(char *filename, int *size) {
+//returns size by reference using parameter
+//returns stock name string by reference using parameter
+double *parseFile(char *filename, int *size, char *name) {
     FILE *fp = NULL;
     double *out = NULL;
     char tempStr[50] = "";
@@ -27,9 +29,15 @@ double *parseFile(char *filename, int *size) {
     out = malloc(sizeof(double) * counter);
     *size = counter - 1;
 
+    counter = 0;
     fseek(fp, 0, SEEK_SET);
     while(fgets(tempStr, 50, fp) != NULL){
         sscanf(tempStr, "%s %s", date, value);
+        if(counter == 0){
+            char delim[] = ",";
+            char *temp = strtok(date, delim);
+            strcpy(name, temp);
+        }
         if(strcmp(value, "") != 0){
             char delim[] = ",";
             char *valPtr = strtok(value, delim);
@@ -38,6 +46,7 @@ double *parseFile(char *filename, int *size) {
             out[index] = curVal;
             index++;
         }
+        counter++;
     }
     out[index] = -1;
 
@@ -182,19 +191,18 @@ int calculateSMACrosses(double *prices, int size){
     }
 }
 
-//make chooseAction function(using information from signal line)
-//if MACD < signal line, bearish signal
-//if MACD > signal line, bullish signal
-//if MACD inc rapidly, overbought, will correct
-//if MACD dec rapdly, oversold, will correct
-//if short term SMA crosses above long SMA, buy signal(1)
-//if short term SMA crosses below long SMA, sell signal(-1)
-void analyzeTrends(double *prices, int size){
+//takes in all prices, the number of periods, and the name of the Stock
+//calls all calculation functions, and then uses the results to make conclusions
+//The function then prints out the conclusions to the user, as well as any core data
+void analyzeTrends(double *prices, int size, char *name){
     double curMACD = calculateMACD(prices, size);
     double prevMACD = calculateMACD(prices, (size - 1));
     double signalLineVal = calculateSignalLine(prices, size);
     int actionSignal = calculateSMACrosses(prices, size);
     double change = ((curMACD * 100) / prevMACD) - 100.0;
+
+    printf("\n");
+    printf("Stock: %s, price: $%f\n", name, prices[size - 1]);
 
     printf("\n");
     printf("SMA CROSSOVER ANALYSIS: \n");
@@ -247,9 +255,7 @@ void analyzeTrends(double *prices, int size){
         printf("There has been no change large enough to cause a price correction.\n");
     }
     printf("\n");
-    //add values to display
-    //add stock name to display
 }
 
-//output with text file given as well(keep date and add EMA value?)
-//use flags at compilation to determine what is written to text file?
+//output with created text file
+//use flags at compilation to determine if user wants text file created with output
