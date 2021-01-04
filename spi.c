@@ -88,32 +88,55 @@ double calculateEMA(double *prices, int numPeriods, double periodSMA) {
     return curMA;
 }
 
+double *setPriceArray(double *prices, int pricesSize, int arrSize, int multiplier){
+    int startIdx = pricesSize - (arrSize * multiplier);
+    int i, j;
+    double *priceArr = malloc(sizeof(double) * arrSize);
+    j = 0;
+    for(i = startIdx; i < (pricesSize - (arrSize * (multiplier - 1))); i++) {
+        priceArr[j] = prices[i];
+        //printf("added: %f at %d\n", prices[i], j);
+        j++;
+    }
+
+    return priceArr;
+}
+
 //make MACD calculation function, refer to resources
 double calculateMACD(double *prices, int size) {
-    double macd1[26];
-    double macd2[12];
+    double *arr12;
+    double *arr26;
 
     if(size < 52) {
         printf("Cannot calculate MACD, must have 52 periods of data.\n");
     } else {
-        int startIdx = size - 52;
-        int i;
-        int j;
-        double sma26;
+        double sma12, sma26, ema12, ema26;
         //fill arr for 26 period SMA
-        j = 0;
-        for(i = (startIdx - 1); i < (size - 26); i++) {
-            macd1[j] = prices[i];
-            printf("added: %f at %d\n", prices[i], j);
-            j++;
-        }
-        sma26 = calculateSMA(macd1, 26);
+        arr12 = setPriceArray(prices, size, 12, 2);
+        arr26 = setPriceArray(prices, size, 26, 2);
+        sma26 = calculateSMA(arr26, 26);
+        sma12 = calculateSMA(arr12, 12);
+        free(arr12);
+        free(arr26);
+        // printf("sma12 %f\n", sma12);
+        // printf("sma26 %f\n", sma26);
+        arr12 = setPriceArray(prices, size, 12, 1);
+        arr26 = setPriceArray(prices, size, 26, 1);
+        ema12 = calculateEMA(arr12, 12, sma12);
+        ema26 = calculateEMA(arr26, 26, sma26);
+        printf("ema12 %f\n", ema12);
+        printf("ema26 %f\n", ema26);
+        free(arr12);
+        free(arr26);
     }
 
     return 0.0;
 }
 
+//calculate signal line function
 
-//make chooseAction function
+//make chooseAction function(using information from signal line)
 
 //make display function
+
+//output with text file given as well(keep date and add EMA value?)
