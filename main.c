@@ -21,9 +21,9 @@ int main( int argc, char **argv ){
     } else {
         strcpy(filename, argv[1]);
         arr = parseFile(filename, &size);
-        //printf("%f\n", arr[253]);
-        printf("MACD for data: %f\n", calculateMACD(arr, size));
-        printf("signal line value: %f\n", calculateSignalLine(arr, size));
+        //printf("MACD for data: %f\n", calculateMACD(arr, size));
+        //printf("signal line value: %f\n", calculateSignalLine(arr, size));
+        printf("%d\n", calculateSMACrosses(arr, size));
         free(arr);
     }
     return 0;

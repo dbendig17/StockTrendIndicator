@@ -7,4 +7,5 @@ double calculateEMA(double *prices, int numPeriods, double periodSMA);
 double *setPriceArray(double *prices, int pricesSize, int arrSize, int multiplier);
 double calculateMACD(double *prices, int size);
 double calculateSignalLine(double *prices, int size);
+int calculateSMACrosses(double *prices, int size);
 #endif

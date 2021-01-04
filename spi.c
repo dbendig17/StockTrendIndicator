@@ -102,7 +102,10 @@ double *setPriceArray(double *prices, int pricesSize, int arrSize, int multiplie
     return priceArr;
 }
 
-//make MACD calculation function, refer to resources
+//takes in array of all prices and the number of prices
+//calculates the SMA and EMA for 12 and 26 periods
+//these calculations use setPriceArray as a setup function
+//the 12 day EMA - the 26 day EMA is returned as the MACD
 double calculateMACD(double *prices, int size) {
     double *arr12;
     double *arr26;
@@ -133,9 +136,14 @@ double calculateMACD(double *prices, int size) {
     }
 }
 
+//this function takes in all prices, and the number of prices
+//calculates the MACD of the recent 9 periods
+//uses those values to calculate the SMA, which is today's value
+//on the signal line
 double calculateSignalLine(double *prices, int size){
     int i, j, k;
     double *signalLine = malloc(sizeof(double) * 9);
+    double out;
 
     j = 0;
     k = 8;
@@ -145,12 +153,42 @@ double calculateSignalLine(double *prices, int size){
         j++;
         k--;
     }
-    return calculateSMA(signalLine, 9);
+    out = calculateSMA(signalLine, 9);
+    free(signalLine);
+    return out;
 }
 
-//calculate signal line function
+//takes in all prices, and number of periods
+//calculates the 10 and 50 period SMA
+//uses setPriceArray as a helper function
+//returns int value from comparing short and long SMA
+int calculateSMACrosses(double *prices, int size){
+    if(size < 50) {
+        printf("Cannot calculate SMA crosses, must have 50 periods of data.\n");
+        return 0;
+    } else {
+        double *shortPrices = setPriceArray(prices, size, 10, 1);
+        double *longPrices = setPriceArray(prices, size, 50, 1);
+        double shortSMA = calculateSMA(shortPrices, 10);
+        double longSMA = calculateSMA(longPrices, 50);
+        printf("short term: %f long term: %f\n", shortSMA, longSMA);
+        if(shortSMA > longSMA){
+            return 1;
+        } else if(shortSMA < longSMA){
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+}
 
 //make chooseAction function(using information from signal line)
+//if MACD < signal line, bearish signal
+//if MACD > signal line, bullish signal
+//if MACD inc rapidly, overbought, will correct
+//if MACD dec rapdly, oversold, will correct
+//if short term SMA crosses above long SMA, buy signal(1)
+//if short term SMA crosses below long SMA, sell signal(-1)
 
 //make display function
 
