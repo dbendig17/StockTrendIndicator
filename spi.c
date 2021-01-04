@@ -191,11 +191,14 @@ int calculateSMACrosses(double *prices, int size){
 //if short term SMA crosses below long SMA, sell signal(-1)
 void analyzeTrends(double *prices, int size){
     double curMACD = calculateMACD(prices, size);
-    double prevMACD = calculateMACD(prices, (size - 5));
+    double prevMACD = calculateMACD(prices, (size - 1));
     double signalLineVal = calculateSignalLine(prices, size);
     int actionSignal = calculateSMACrosses(prices, size);
+    double change = ((curMACD * 100) / prevMACD) - 100.0;
 
-    printf("SMA Crossover Analysis: \n");
+    printf("\n");
+    printf("SMA CROSSOVER ANALYSIS: \n");
+    printf("\n");
     if(actionSignal){
         printf("The short term average for the stock price is greater than long term average.\n");
         printf("This indicates a buy signal for this stock.\n");
@@ -211,7 +214,10 @@ void analyzeTrends(double *prices, int size){
         printf("The stock price trend is difficult to determine.\n");
         printf("\n");
     }
-    printf("MACD Analysis: \n");
+    printf("\n");
+    printf("MACD GENERAL ANALYSIS: \n");
+    printf("\n");
+    printf("The current MACD value is: %f, and the current Signal Line value is: %f\n", curMACD, signalLineVal);
     if(curMACD > signalLineVal){
         printf("The MACD for the stock price is greater than the Signal Line.\n");
         printf("This indicates a bullish(increasing) trend for this stock.\n");
@@ -225,9 +231,24 @@ void analyzeTrends(double *prices, int size){
         printf("The stock price trend is difficult to determine.\n");
         printf("\n");
     }
+    printf("\n");
+    printf("MACD RAPID CHANGE ANALYSIS: \n");
+    printf("\n");
+    printf("The MACD has changed by %%%f compared to last period.\n", change);
+    if(change <= -5.0){ //decrease of 5%
+        printf("The MACD has decreased significantly, indicating that the stock is oversold.\n");
+        printf("If/when the value corrects, the stock price will increase.\n");
+        printf("\n");
+    } else if(change >= 5.0){ //increase of 5%
+        printf("The MACD has increased significantly, indicating that the stock is overbought.\n");
+        printf("If/when the value corrects, the stock price will decrease.\n");
+        printf("\n");
+    } else {
+        printf("There has been no change large enough to cause a price correction.\n");
+    }
+    printf("\n");
     //add values to display
     //add stock name to display
-    //use cur and previous MACD to calculate sudden increase
 }
 
 //output with text file given as well(keep date and add EMA value?)
