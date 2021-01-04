@@ -23,7 +23,8 @@ int main( int argc, char **argv ){
         arr = parseFile(filename, &size);
         //printf("MACD for data: %f\n", calculateMACD(arr, size));
         //printf("signal line value: %f\n", calculateSignalLine(arr, size));
-        printf("%d\n", calculateSMACrosses(arr, size));
+        //printf("%d\n", calculateSMACrosses(arr, size));
+        analyzeTrends(arr, size);
         free(arr);
     }
     return 0;

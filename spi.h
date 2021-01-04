@@ -8,4 +8,5 @@ double *setPriceArray(double *prices, int pricesSize, int arrSize, int multiplie
 double calculateMACD(double *prices, int size);
 double calculateSignalLine(double *prices, int size);
 int calculateSMACrosses(double *prices, int size);
+void analyzeTrends(double *prices, int size);
 #endif

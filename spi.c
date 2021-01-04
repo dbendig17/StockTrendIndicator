@@ -171,7 +171,7 @@ int calculateSMACrosses(double *prices, int size){
         double *longPrices = setPriceArray(prices, size, 50, 1);
         double shortSMA = calculateSMA(shortPrices, 10);
         double longSMA = calculateSMA(longPrices, 50);
-        printf("short term: %f long term: %f\n", shortSMA, longSMA);
+        //printf("short term: %f long term: %f\n", shortSMA, longSMA);
         if(shortSMA > longSMA){
             return 1;
         } else if(shortSMA < longSMA){
@@ -189,7 +189,46 @@ int calculateSMACrosses(double *prices, int size){
 //if MACD dec rapdly, oversold, will correct
 //if short term SMA crosses above long SMA, buy signal(1)
 //if short term SMA crosses below long SMA, sell signal(-1)
+void analyzeTrends(double *prices, int size){
+    double curMACD = calculateMACD(prices, size);
+    double prevMACD = calculateMACD(prices, (size - 5));
+    double signalLineVal = calculateSignalLine(prices, size);
+    int actionSignal = calculateSMACrosses(prices, size);
 
-//make display function
+    printf("SMA Crossover Analysis: \n");
+    if(actionSignal){
+        printf("The short term average for the stock price is greater than long term average.\n");
+        printf("This indicates a buy signal for this stock.\n");
+        printf("The stock price is likely to increase.\n");
+        printf("\n");
+    } else if(!(actionSignal)){
+        printf("The short term average for the stock price is less than long term average.\n");
+        printf("This indicates a sell signal for this stock.\n");
+        printf("The stock price is likely to decrease.\n");
+        printf("\n");
+    } else {
+        printf("The short term average for the stock price is equal to the long term average.\n");
+        printf("The stock price trend is difficult to determine.\n");
+        printf("\n");
+    }
+    printf("MACD Analysis: \n");
+    if(curMACD > signalLineVal){
+        printf("The MACD for the stock price is greater than the Signal Line.\n");
+        printf("This indicates a bullish(increasing) trend for this stock.\n");
+        printf("\n");
+    } else if(curMACD < signalLineVal){
+        printf("The MACD for the stock price is less than the Signal Line.\n");
+        printf("This indicates a bearish(decreasing) trend for this stock.\n");
+        printf("\n");
+    } else {
+        printf("The MACD for the stock price is equal to the Signal Line.\n");
+        printf("The stock price trend is difficult to determine.\n");
+        printf("\n");
+    }
+    //add values to display
+    //add stock name to display
+    //use cur and previous MACD to calculate sudden increase
+}
 
 //output with text file given as well(keep date and add EMA value?)
+//use flags at compilation to determine what is written to text file?
