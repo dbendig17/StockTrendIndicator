@@ -109,6 +109,7 @@ double calculateMACD(double *prices, int size) {
 
     if(size < 52) {
         printf("Cannot calculate MACD, must have 52 periods of data.\n");
+        return 0.0;
     } else {
         double sma12, sma26, ema12, ema26;
         //fill arr for 26 period SMA
@@ -128,9 +129,8 @@ double calculateMACD(double *prices, int size) {
         printf("ema26 %f\n", ema26);
         free(arr12);
         free(arr26);
+        return ema12 - ema26;
     }
-
-    return 0.0;
 }
 
 //calculate signal line function

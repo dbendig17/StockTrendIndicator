@@ -22,7 +22,7 @@ int main( int argc, char **argv ){
         strcpy(filename, argv[1]);
         arr = parseFile(filename, &size);
         //printf("%f\n", arr[253]);
-        calculateMACD(arr, size);
+        printf("MACD for data: %f\n", calculateMACD(arr, size));
         free(arr);
     }
     return 0;
