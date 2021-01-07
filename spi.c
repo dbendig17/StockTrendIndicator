@@ -257,5 +257,11 @@ void analyzeTrends(double *prices, int size, char *name){
     printf("\n");
 }
 
+void writeOut() {
+    FILE *fp = NULL;
+    char filename[] = "spiOutput.txt";
+    fp = fopen(filename, "rw");
+    fclose(filename);
+}
 //output with created text file
 //use flags at compilation to determine if user wants text file created with output

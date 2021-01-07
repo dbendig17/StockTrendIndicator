@@ -17,6 +17,9 @@ int main( int argc, char **argv ){
         strcpy(filename, argv[1]);
         arr = parseFile(filename, &size, name);
         analyzeTrends(arr, size, name);
+        // if(){
+        // 
+        // }
         free(arr);
         free(name);
     }
