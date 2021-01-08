@@ -9,17 +9,28 @@ int main( int argc, char **argv ){
     double *arr;
     char *name = malloc(sizeof(char) * 10);
     int size = 0;
+    int flag = 0;
 
-    if(argc != 2){
-        fprintf(stderr, "usage: %s 'filename.txt'\n", argv[0]);
+    if(argc < 2 || argc > 3){
+        fprintf(stderr, "usage: %s 'filename.txt' -f\n", argv[0]);
         exit(-1);
     } else {
-        strcpy(filename, argv[1]);
+        if(argc == 2){
+            strcpy(filename, argv[1]);
+        } else {
+            if(strcmp(argv[1],"-f") == 0){
+                flag = 1;
+                strcpy(filename, argv[2]);
+            } else if (strcmp(argv[2],"-f") == 0) {
+                flag = 1;
+                strcpy(filename, argv[1]);
+            }
+        }
         arr = parseFile(filename, &size, name);
         analyzeTrends(arr, size, name);
-        // if(){
-        // 
-        // }
+        if(flag){
+            printf("detected -f flag\n");
+        }
         free(arr);
         free(name);
     }
