@@ -257,15 +257,35 @@ void analyzeTrends(double *prices, int size, char *name, int flag){
     printf("\n");
 
     if(flag){
-        writeOut(name, prices[size - 1], curMACD, prevMACD, signalLineVal);
+        writeOut(prices, size, name, prices[size - 1], curMACD, prevMACD, signalLineVal);
     }
 }
 
-void writeOut(char *name, double price, double macd, double prevMACD, double signalLine) {
+void writeOutSMA(double *prices, int size, FILE *fp) {
+    int i;
+    double curSMA;
+    fprintf(fp, "\n");
+    fprintf(fp, "Period Number\t\t\t\t\tSMA Value\n");
+    for(i = 0; i < size; i++) {
+        curSMA = calculateSMA(prices, (i + 1));
+        if(i < 9){
+            fprintf(fp, "%d\t\t\t\t\t\t\t\t\t\t\t%f\n", (i+1), curSMA);
+        } else {
+            fprintf(fp, "%d\t\t\t\t\t\t\t\t\t\t%f\n", (i+1), curSMA);
+        }
+    }
+}
+
+void writeOut(double *prices, int size, char *name, double price, double macd, double prevMACD, double signalLine) {
     FILE *fp = NULL;
     char filename[] = "spiOutput.txt";
     fp = fopen(filename, "w");
-    fprintf(fp, "%s\n", name);
+    fprintf(fp, "Stock:\t\t\t\t\t\t\t\t\t\t\t\t\t\t%s\n", name);
+    fprintf(fp, "Current price:\t\t\t\t\t\t\t\t\t\t%f\n", price);
+    fprintf(fp, "Current MACD value:\t\t\t\t\t\t\t\t%f\n", macd);
+    fprintf(fp, "Previous period MACD value:\t\t\t\t%f\n", prevMACD);
+    fprintf(fp, "Current signal line value:\t\t\t\t%f\n", signalLine);
+    writeOutSMA(prices, size, fp);
     fclose(fp);
 }
 //output with created text file

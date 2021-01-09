@@ -13,4 +13,4 @@ spi.o: spi.c spi.h
 		$(CC) $(CFLAGS) -c spi.c
 
 clean:
-		rm -i main.o main spi.o
+		rm -i main.o main spi.o spiOutput.txt

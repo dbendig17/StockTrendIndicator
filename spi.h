@@ -9,5 +9,6 @@ double calculateMACD(double *prices, int size);
 double calculateSignalLine(double *prices, int size);
 int calculateSMACrosses(double *prices, int size);
 void analyzeTrends(double *prices, int size, char *name, int flag);
-void writeOut(char *name, double price, double macd, double prevMACD, double signalLine);
+void writeOut(double *prices, int size, char *name, double price, double macd, double prevMACD, double signalLine);
+void writeOutSMA(double *prices, int size, FILE *fp);
 #endif
