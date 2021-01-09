@@ -27,6 +27,7 @@ int main( int argc, char **argv ){
             }
         }
         arr = parseFile(filename, &size, name);
+        printf("Stock Price Indicator - Dillon B Jan2021\n");
         if(flag){
             analyzeTrends(arr, size, name, 1);
         } else {
