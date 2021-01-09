@@ -194,7 +194,7 @@ int calculateSMACrosses(double *prices, int size){
 //takes in all prices, the number of periods, and the name of the Stock
 //calls all calculation functions, and then uses the results to make conclusions
 //The function then prints out the conclusions to the user, as well as any core data
-void analyzeTrends(double *prices, int size, char *name){
+void analyzeTrends(double *prices, int size, char *name, int flag){
     double curMACD = calculateMACD(prices, size);
     double prevMACD = calculateMACD(prices, (size - 1));
     double signalLineVal = calculateSignalLine(prices, size);
@@ -255,13 +255,18 @@ void analyzeTrends(double *prices, int size, char *name){
         printf("There has been no change large enough to cause a price correction.\n");
     }
     printf("\n");
+
+    if(flag){
+        writeOut(name, prices[size - 1], curMACD, prevMACD, signalLineVal);
+    }
 }
 
-// void writeOut() {
-//     FILE *fp = NULL;
-//     char filename[] = "spiOutput.txt";
-//     fp = fopen(filename, "rw");
-//     fclose(filename);
-// }
+void writeOut(char *name, double price, double macd, double prevMACD, double signalLine) {
+    FILE *fp = NULL;
+    char filename[] = "spiOutput.txt";
+    fp = fopen(filename, "w");
+    fprintf(fp, "%s\n", name);
+    fclose(fp);
+}
 //output with created text file
 //use flags at compilation to determine if user wants text file created with output

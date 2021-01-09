@@ -27,9 +27,11 @@ int main( int argc, char **argv ){
             }
         }
         arr = parseFile(filename, &size, name);
-        analyzeTrends(arr, size, name);
         if(flag){
+            analyzeTrends(arr, size, name, 1);
             printf("detected -f flag\n");
+        } else {
+            analyzeTrends(arr, size, name, 0);
         }
         free(arr);
         free(name);
